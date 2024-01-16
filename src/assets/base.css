@@ -1,0 +1,23 @@
+/** @format */
+
+body {
+  margin: 0;
+}
+
+/* 整体滚动条 */
+::-webkit-scrollbar {
+  width: 8px; /* 滚动条的宽度 */
+  background-color: transparent; /* 滚动条的背景色 */
+}
+
+/* 滚动条内部的滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(206, 210, 216); /* 滑块的颜色 */
+  border-radius: 10px; /* 滑块的圆角 */
+}
+
+/* 滑块hover效果 */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(188, 193, 198);
+  cursor: pointer; /* 这个小手不会呈现！ */
+}

@@ -1,17 +1,26 @@
-import './assets/main.css'
+/** @format */
 
-import {createApp} from 'vue'
-import {createPinia} from 'pinia'
-// 完整引入 Element Plus
-import ElementPlus from 'element-plus'
+import "@/assets/base.css";
 
-import App from './App.vue'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
 // import router from './router'
+// 全局引入 Element Plus
+import ElementPlus from "element-plus";
+// 千万别往了样式
+import "element-plus/dist/index.css";
+// 全局引入 Element Plus 图标
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(createPinia())
-app.use(ElementPlus)
+app.use(createPinia());
 // app.use(router)
+app.use(ElementPlus);
+// 注册 Element Plus 图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 
-app.mount('#app')
+app.mount("#app");

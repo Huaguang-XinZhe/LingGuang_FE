@@ -1,0 +1,56 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .textarea-container {
+        /*width: 100%;*/ /* 写不写都是默认撑满盒子 content 的宽度（不包括内 padding）*/
+        height: 100px; /* 加上这一行就可以避免父容器高度塌陷的问题 */
+        position: relative;
+      }
+
+      textarea {
+        position: absolute;
+        bottom: 20px;
+        width: 100%; /* 这里就必须写好宽度，要不然就是默认的，而默认的不会撑满盒子 content 的宽度（div 会） */
+        box-sizing: border-box; /* 如果去掉，textarea 会和 Footer 一样宽，加上的话就会被限制在 content 内。但这样的话，就得考虑边框对 height 造成的影响了。 */
+        font-size: 18px;
+        line-height: 20px;
+        resize: none; /* 禁止调整大小 */
+        /* overflow: auto; 自动显示滚动条仅当内容溢出时 */
+        /* 设置一个固定的高度可以帮助防止滚动 */
+        height: 42px;
+        max-height: 600px;
+        padding: 10px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="textarea-container">
+      <textarea cols="30" rows="2" oninput="handleInput()"></textarea>
+    </div>
+
+    <script>
+      // 获取 textarea 元素
+      const textarea = document.querySelector("textarea");
+
+      function handleInput() {
+        // console.log("输入处理");
+        // console.log(textarea.scrollHeight);
+        // if (textarea.value == null) return;
+        console.log("调整执行！");
+        // 这个 scrollHeight 是包括行高和内 padding 的，但不包括边框
+        // 每次回车会增加 scrollHeight 的高度——一个行高
+        const scrollHeight = textarea.scrollHeight;
+        // 低于最小高度或高于最大高度，就不要设置了
+        // if (scrollHeight <= 42 || scrollHeight > 600) return;
+        console.log("@", scrollHeight + 2);
+        // textareaHeight.value = scrollHeight + 2 + "px"; // 设置新的高度
+      }
+    </script>
+  </body>
+</html>
