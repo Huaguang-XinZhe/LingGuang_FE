@@ -1,60 +1,43 @@
 <!-- @format -->
 
 <template>
-  <el-row class="row-bg">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
-  <el-row class="row-bg" justify="center">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
-  <el-row class="row-bg" justify="end">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
-  <el-row class="row-bg" justify="space-between">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
-  <el-row class="row-bg" justify="space-around">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
-  <el-row class="row-bg" justify="space-evenly">
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple-light" /></el-col>
-    <el-col :span="6"><div class="grid-content ep-bg-purple" /></el-col>
-  </el-row>
+  <div class="demo-image__preview">
+    <el-image
+      style="width: 100px; height: 100px"
+      :src="url"
+      :zoom-rate="2"
+      :max-scale="7"
+      :min-scale="0.2"
+      :preview-src-list="srcList"
+      :initial-index="4"
+      fit="cover"
+    />
+  </div>
 </template>
 
-<style lang="scss">
-.el-row {
-  margin-bottom: 20px;
-}
-.el-row:last-child {
-  margin-bottom: 0;
-}
-.el-col {
-  border-radius: 4px;
-}
+<script lang="ts" setup>
+const url =
+  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg";
+const srcList = [
+  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+  "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
+  "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
+  "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
+  "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
+  "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
+  "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
+];
+</script>
 
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
+<style scoped>
+.demo-image__error .image-slot {
+  font-size: 30px;
 }
-.ep-bg-purple-dark {
-  background: #99a9bf;
+.demo-image__error .image-slot .el-icon {
+  font-size: 30px;
 }
-.ep-bg-purple {
-  background: #d3dce6;
-}
-.ep-bg-purple-light {
-  background: #e5e9f2;
+.demo-image__error .el-image {
+  width: 100%;
+  height: 200px;
 }
 </style>

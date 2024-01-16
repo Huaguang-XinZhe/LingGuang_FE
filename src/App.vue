@@ -10,7 +10,7 @@
         <!-- 注意，千万不要忘记了 `-`，虽然它不会报错！ -->
         <!-- 会自动填充所有可用空间-->
         <el-main>
-          <Test />
+          <MainList title="待办" />
         </el-main>
         <el-footer height="100px">
           <!-- <MdInput /> -->
@@ -25,8 +25,7 @@
 
 <script lang="ts" setup>
 import MdInput2 from "@/components/MdInput2.vue";
-import Test from "./components/Test.vue";
-import ExpandableInput from "./components/ExpandableInput.vue";
+import MainList from "./components/MainList.vue";
 </script>
 
 <style scoped>
