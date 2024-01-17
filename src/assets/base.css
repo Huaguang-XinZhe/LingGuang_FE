@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+h2 {
+  margin: 0;
+}
+
 /* 整体滚动条 */
 ::-webkit-scrollbar {
   width: 8px; /* 滚动条的宽度 */

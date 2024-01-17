@@ -27,7 +27,9 @@ const textarea = ref("");
 <style scoped>
 /* 尽可能用自己的类吧，这样控制多些 */
 .container {
+  width: 80%;
   height: 100%;
+  margin: 0 auto;
 }
 .left-col {
   position: relative;

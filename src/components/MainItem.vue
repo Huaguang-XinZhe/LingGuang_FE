@@ -32,6 +32,12 @@
             <el-button type="primary" :icon="Plus" color="#626aef" plain
               >Guidance</el-button
             >
+            <el-button
+              :icon="CopyDocument"
+              type="primary"
+              plain
+              class="copy-button"
+            ></el-button>
             <el-button type="danger" :icon="Delete" plain />
           </el-button-group>
         </el-row>
@@ -41,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { Delete, Plus } from "@element-plus/icons-vue";
+import { CopyDocument, Delete, Plus } from "@element-plus/icons-vue";
 // 接收 content
 defineProps({
   content: String,
@@ -63,6 +69,7 @@ const srcList = [
 .card {
   margin: 15px 20px;
   border-radius: 10px;
+  user-select: none;
 }
 .image {
   width: 50px;
@@ -74,5 +81,9 @@ const srcList = [
 }
 .text:focus {
   outline: none;
+}
+.copy-button {
+  border: 1px solid lightgray !important;
+  margin: 0 !important;
 }
 </style>

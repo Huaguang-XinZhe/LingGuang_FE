@@ -3,14 +3,14 @@
 <template>
   <!-- 套了个 container 就不会影响外边的 main 区域了（不会让 main 区域出现滚动条） -->
   <div class="container">
-    <h2>{{ title }}</h2>
-    <el-scrollbar height="650px">
+    <h2 contenteditable>{{ title }}</h2>
+    <el-scrollbar class="scroll-container">
       <MainItem
         v-for="input in inputs"
         :key="input.id"
         :content="input.content"
       />
-      <!-- <Test /> -->
+      <!--      <Test />-->
     </el-scrollbar>
   </div>
 </template>
@@ -48,7 +48,19 @@ const inputs = [
 </script>
 
 <style scoped>
+.container {
+  height: 100%; /* 必须指定高度，否则 scroll-container 还是会溢出 */
+  display: flex;
+  flex-direction: column;
+}
 h2 {
-  padding: 0 20px;
+  margin: 20px;
+}
+h2:focus {
+  outline: none;
+}
+.scroll-container {
+  flex: 1;
+  margin-bottom: 20px;
 }
 </style>

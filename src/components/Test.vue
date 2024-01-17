@@ -1,43 +1,133 @@
-<!-- @format -->
-
 <template>
-  <div class="demo-image__preview">
-    <el-image
-      style="width: 100px; height: 100px"
-      :src="url"
-      :zoom-rate="2"
-      :max-scale="7"
-      :min-scale="0.2"
-      :preview-src-list="srcList"
-      :initial-index="4"
-      fit="cover"
-    />
-  </div>
+  <el-tree
+    :allow-drop="allowDrop"
+    :allow-drag="allowDrag"
+    :data="data"
+    draggable
+    default-expand-all
+    node-key="id"
+    @node-drag-start="handleDragStart"
+    @node-drag-enter="handleDragEnter"
+    @node-drag-leave="handleDragLeave"
+    @node-drag-over="handleDragOver"
+    @node-drag-end="handleDragEnd"
+    @node-drop="handleDrop"
+  />
+  <el-avatar
+    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+  />
 </template>
 
 <script lang="ts" setup>
-const url =
-  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg";
-const srcList = [
-  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
-  "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
-  "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
-  "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
-  "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
+import type Node from "element-plus/es/components/tree/src/model/node";
+import type { DragEvents } from "element-plus/es/components/tree/src/model/useDragNode";
+import type {
+  AllowDropType,
+  NodeDropType,
+} from "element-plus/es/components/tree/src/tree.type";
+
+const handleDragStart = (node: Node, ev: DragEvents) => {
+  console.log("drag start", node);
+};
+const handleDragEnter = (
+  draggingNode: Node,
+  dropNode: Node,
+  ev: DragEvents,
+) => {
+  console.log("tree drag enter:", dropNode.label);
+};
+const handleDragLeave = (
+  draggingNode: Node,
+  dropNode: Node,
+  ev: DragEvents,
+) => {
+  console.log("tree drag leave:", dropNode.label);
+};
+const handleDragOver = (draggingNode: Node, dropNode: Node, ev: DragEvents) => {
+  console.log("tree drag over:", dropNode.label);
+};
+const handleDragEnd = (
+  draggingNode: Node,
+  dropNode: Node,
+  dropType: NodeDropType,
+  ev: DragEvents,
+) => {
+  console.log("tree drag end:", dropNode && dropNode.label, dropType);
+};
+const handleDrop = (
+  draggingNode: Node,
+  dropNode: Node,
+  dropType: NodeDropType,
+  ev: DragEvents,
+) => {
+  console.log("tree drop:", dropNode.label, dropType);
+};
+const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) => {
+  if (dropNode.data.label === "Level two 3-1") {
+    return type !== "inner";
+  } else {
+    return true;
+  }
+};
+const allowDrag = (draggingNode: Node) => {
+  return !draggingNode.data.label.includes("Level three 3-1-1");
+};
+
+const data = [
+  {
+    label: "Level one 1",
+    children: [
+      {
+        label: "Level two 1-1",
+        children: [
+          {
+            label: "Level three 1-1-1",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Level one 2",
+    children: [
+      {
+        label: "Level two 2-1",
+        children: [
+          {
+            label: "Level three 2-1-1",
+          },
+        ],
+      },
+      {
+        label: "Level two 2-2",
+        children: [
+          {
+            label: "Level three 2-2-1",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Level one 3",
+    children: [
+      {
+        label: "Level two 3-1",
+        children: [
+          {
+            label: "Level three 3-1-1",
+          },
+        ],
+      },
+      {
+        label: "Level two 3-2",
+        children: [
+          {
+            label: "Level three 3-2-1",
+          },
+        ],
+      },
+    ],
+  },
 ];
 </script>
-
-<style scoped>
-.demo-image__error .image-slot {
-  font-size: 30px;
-}
-.demo-image__error .image-slot .el-icon {
-  font-size: 30px;
-}
-.demo-image__error .el-image {
-  width: 100%;
-  height: 200px;
-}
-</style>
