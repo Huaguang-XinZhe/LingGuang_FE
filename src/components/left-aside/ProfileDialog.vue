@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="isShow" width="50%" center class="container">
+  <el-dialog
+    width="50%"
+    center
+    class="container"
+    :model-value="dialogStore.isDialogVisible"
+    @update:model-value="dialogStore.hideDialog()"
+  >
     <el-row justify="center">
       <el-avatar
         :size="80"
@@ -30,31 +36,9 @@
 
 <script setup lang="ts">
 import { UploadFilled } from "@element-plus/icons-vue";
-import { ref, watch } from "vue";
+import { useDialogStore } from "@/stores/dialogStore";
 
-const props = defineProps({
-  isShowFromParent: Boolean,
-});
-const emit = defineEmits(["update:isShowFromParent"]);
-
-const isShow = ref(false);
-
-// 监视 isShowFromParent 的变化
-watch(
-  () => props.isShowFromParent,
-  (newVal) => {
-    console.log("监视到 isShowFromParent 的变化：", newVal);
-    isShow.value = newVal;
-  },
-);
-// 监视 isShow 的变化（监听到了变化只会执行一次）
-watch(
-  () => isShow.value,
-  (newVal) => {
-    console.log("监视到 isShow 的变化：", newVal);
-    emit("update:isShowFromParent", newVal);
-  },
-);
+const dialogStore = useDialogStore();
 </script>
 
 <style scoped>

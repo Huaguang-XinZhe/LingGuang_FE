@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts" setup>
-import MdInput2 from "@/components/MdInput2.vue";
-import MainList from "./components/MainList.vue";
-import LeftAside from "@/components/LeftAside.vue";
+import MdInput2 from "@/components/bottom-input/MdInput2.vue";
+import MainList from "./components/main/MainList.vue";
+import LeftAside from "@/components/left-aside/LeftAside.vue";
 </script>
 
 <style scoped>
@@ -38,6 +38,7 @@ import LeftAside from "@/components/LeftAside.vue";
   border-bottom: 1px solid rgb(208, 215, 222);
 }
 .left-aside {
+  padding: 10px 0;
   background-color: rgb(246, 248, 250);
   border-right: 1px solid rgb(208, 215, 222);
 }
