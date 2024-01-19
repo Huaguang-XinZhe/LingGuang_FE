@@ -13,11 +13,8 @@ import "element-plus/dist/index.css";
 // 全局引入 Element Plus 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
-const app = createApp(App);
+const app = createApp(App).use(createPinia()).use(ElementPlus);
 
-app.use(createPinia());
-// app.use(router)
-app.use(ElementPlus);
 // 注册 Element Plus 图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
