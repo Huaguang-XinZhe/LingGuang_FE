@@ -3,8 +3,10 @@
 <template>
   <!--  如果外部容器的高度占满全屏，则内容的高度会自动延伸-->
   <el-container>
-    <el-header>Header</el-header>
-    <el-container style="height: 94vh">
+    <el-header>
+      <MyHeader />
+    </el-header>
+    <el-container class="below-header">
       <el-aside width="200px" class="left-aside">
         <LeftAside />
       </el-aside>
@@ -35,13 +37,17 @@
 import MdInput2 from "@/components/bottom-input/MdInput2.vue";
 import LeftAside from "@/components/left-aside/LeftAside.vue";
 import MainList from "@/components/main/MainList.vue";
+import MyHeader from "@/components/header/MyHeader.vue";
 </script>
 
 <style scoped>
 .el-header {
-  height: 6vh;
+  height: 8vh;
   background-color: rgb(242, 242, 242);
   border-bottom: 1px solid rgb(208, 215, 222);
+}
+.below-header {
+  height: 92vh;
 }
 .left-aside {
   padding: 10px 0;
