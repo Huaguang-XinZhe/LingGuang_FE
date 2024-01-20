@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <CatSearchItem />
-    <div class="category-container"></div>
+    <CatTree />
     <UserItem />
   </div>
   <ProfileDialog />
@@ -11,6 +11,7 @@
 import ProfileDialog from "@/components/left-aside/ProfileDialog.vue";
 import UserItem from "@/components/left-aside/UserItem.vue";
 import CatSearchItem from "@/components/left-aside/CatSearchItem.vue";
+import CatTree from "@/components/left-aside/CatTree.vue";
 </script>
 
 <style scoped>
@@ -20,9 +21,5 @@ import CatSearchItem from "@/components/left-aside/CatSearchItem.vue";
   display: flex;
   flex-direction: column;
   height: 100%; /* 指定高度为父容器的高度就必须去除 padding 和 margin，否则会有滚动条（要加得在父容器那里加） */
-}
-.category-container {
-  flex-grow: 1;
-  /*background-color: skyblue;*/
 }
 </style>

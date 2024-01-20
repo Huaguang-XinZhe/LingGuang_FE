@@ -12,11 +12,11 @@
         <!-- 注意，千万不要忘记了 `-`，虽然它不会报错！ -->
         <!-- 会自动填充所有可用空间-->
         <el-main>
-          <!--          <MainList title="待办" />-->
+          <MainList title="待办" />
           <!--          <Test />-->
           <!--          <TestDraggable />-->
           <!--          <TestBase />-->
-          <TestTree />
+          <!--          <TestTree />-->
           <!--          <TestTree2 />-->
           <!--          <TestTree3 />-->
         </el-main>
@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import MdInput2 from "@/components/bottom-input/MdInput2.vue";
 import LeftAside from "@/components/left-aside/LeftAside.vue";
-import TestTree from "@/components/test/TestTree.vue";
+import MainList from "@/components/main/MainList.vue";
 </script>
 
 <style scoped>
