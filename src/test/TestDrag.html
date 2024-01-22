@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TestDrag</title>
+    <style>
+      li {
+        margin: 20px;
+        background-color: skyblue;
+        width: fit-content;
+        padding: 10px;
+      }
+      .point {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%; /* 圆形 */
+        background-color: red;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li draggable="true">这是第一个元素</li>
+      <li draggable="true">这是第二个元素</li>
+      <li draggable="true">这是第三个元素</li>
+    </ul>
+    <button>我是按钮</button>
+
+    <script>
+      // 查找所有 li 元素，返回一个列表
+      const element = document.querySelectorAll("li");
+      element.forEach((liElement) => {
+        // 为每个 li 元素添加 dragstart 事件
+        // liElement.addEventListener("dragstart", (e) => {
+        //   console.log("dragstart", e.target);
+        // });
+
+        // 为每个 li 元素添加 dragend 事件
+        liElement.addEventListener("dragend", (event) => {
+          // e.target 还是拖拽元素
+          // console.log("dragend", e.target);
+          const x = event.clientX;
+          const y = event.clientY;
+          const elementUnderCursor = document.elementFromPoint(x, y);
+          const test = document.elementsFromPoint(x, y);
+          // 返回结果是一个数组，如：[li, ul, body, html]
+          console.log(test);
+          // console.log("拖动结束，最终位置：", x, y);
+          // console.log("这个位置的元素是：", elementUnderCursor);
+
+          // 可视化这个位置
+          const point = document.createElement("div");
+          point.classList.add("point");
+          point.style.left = x + "px";
+          point.style.top = y + "px";
+          document.body.appendChild(point);
+
+          // 5s 后消失
+          setTimeout(() => {
+            point.remove();
+          }, 5000);
+        });
+      });
+    </script>
+  </body>
+</html>

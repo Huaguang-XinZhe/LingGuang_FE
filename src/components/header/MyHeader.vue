@@ -1,9 +1,9 @@
 <template>
   <el-row justify="space-between" align="middle" class="container">
-    <a href="#">
+    <a href="#" target="_self" class="link">
       <img src="@/assets/element-plus-logo.svg" alt="Logo" class="logo" />
     </a>
-    <el-row class="right-container" justify="space-around" align="middle">
+    <el-row class="right-container" justify="space-between" align="middle">
       <el-button :icon="Search" round>Search</el-button>
       <el-switch
         v-model="value"
@@ -13,7 +13,7 @@
       <MyClickIcon
         icon="translation.svg"
         @click="handleTranslation"
-        size="20"
+        :size="20"
       />
       <MyLinkIcon link="https://github.com/Huaguang-XinZhe" icon="github.svg" />
     </el-row>
@@ -37,12 +37,19 @@ function handleTranslation() {
 .container {
   height: 100%;
 }
+.link {
+  width: 200px;
+  text-align: center;
+}
 .logo {
-  width: 130px;
+  width: 125px;
 }
 .right-container {
   /* 1/3 的视口宽度*/
-  width: 30vw;
+  /*width: 28vw;*/
+  /*这里不能用视口宽度，得用固定宽度，要不然会被拉长*/
+  width: 250px;
+  margin-right: 30px;
 }
 .el-switch {
   --el-switch-on-color: rgb(44, 44, 44);

@@ -1,11 +1,11 @@
 <template>
   <el-dialog
-    width="50%"
+    width="60%"
     center
-    class="container"
     :model-value="dialogStore.isDialogVisible"
     @update:model-value="dialogStore.hideDialog()"
   >
+    <!--    Vue 的编译后往 CSS 中加的 data 属性在一个组件中是一致的，对这个组件而言，它是从 el-row 开始的！-->
     <el-row justify="center">
       <el-avatar
         :size="80"
@@ -42,8 +42,29 @@ const dialogStore = useDialogStore();
 </script>
 
 <style scoped>
-.container {
+/*把 container 切换为 el-dialog 也不行*/
+/*.container {
+  !* 这个变量又引用了另一个变量，加 !important 也没用 *!
+  !*--el-dialog-border-radius: 10px !important;*!
+  !*怎么直接修改这个变量也没用？*!
+  !* --el-border-radius-small: 10px;*!
+}*/
+/* 让 .el-dialog 的样式不加属性选择器，变为全局样式，脱离 scope 的限制 */
+:global(.el-dialog) {
+  /*这个样式还是会被组件的样式覆盖，但加上 !important 就没问题了。*/
   border-radius: 10px !important;
+}
+/*在这里使用深度选择器没什么用，都不会在浏览器的 style 中显示*/
+/*:deep(.el-dialog) {
+  border-radius: 10px;
+}*/
+/*用 container 也是一样的，也是会被组件的样式覆盖！*/
+/*:global(.container) {
+  border-radius: 10px !important;
+}*/
+/*深度选择器，选择子组件的样式，在这里，它是放在最上面的（后覆前），不需要 !important！*/
+:deep(.el-upload-dragger) {
+  border-width: 2px;
 }
 .nickname {
   margin: 10px 15px;

@@ -39,9 +39,9 @@ import { reactive } from "vue";
 // 引入vuedraggable拖拽组件
 import Draggable from "vuedraggable";
 // 引入图片
-import img1 from "../../assets/img1.jpg";
-import img2 from "../../assets/img2.png";
-import img3 from "../../assets/img3.jpg";
+import img1 from "../assets/img1.jpg";
+import img2 from "../assets/img2.png";
+import img3 from "../assets/img3.jpg";
 
 const testObj = {
   tag: "div",

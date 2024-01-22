@@ -7,7 +7,7 @@
       <MyHeader />
     </el-header>
     <el-container class="below-header">
-      <el-aside width="200px" class="left-aside">
+      <el-aside class="left-aside">
         <LeftAside />
       </el-aside>
       <el-container>
@@ -45,11 +45,13 @@ import MyHeader from "@/components/header/MyHeader.vue";
   height: 8vh;
   background-color: rgb(242, 242, 242);
   border-bottom: 1px solid rgb(208, 215, 222);
+  padding: 0;
 }
 .below-header {
   height: 92vh;
 }
 .left-aside {
+  width: 200px;
   padding: 10px 0;
   background-color: rgb(246, 248, 250);
   border-right: 1px solid rgb(208, 215, 222);
