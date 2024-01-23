@@ -21,6 +21,8 @@
           <!--          <TestTree />-->
           <!--          <TestTree2 />-->
           <!--          <TestTree3 />-->
+          <!--          <TestClick />-->
+          <!--          <TestHover />-->
         </el-main>
         <el-footer>
           <!-- <MdInput /> -->
@@ -28,7 +30,7 @@
           <!-- <ExpandableInput /> -->
         </el-footer>
       </el-container>
-      <el-aside width="100px" class="right-aside">Recycle Bin</el-aside>
+      <!--      <el-aside width="100px" class="right-aside">Recycle Bin</el-aside>-->
     </el-container>
   </el-container>
 </template>

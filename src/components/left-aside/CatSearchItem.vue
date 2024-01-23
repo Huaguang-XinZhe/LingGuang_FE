@@ -4,7 +4,7 @@
     :fetch-suggestions="fetchAutocompleteSuggestions"
     :trigger-on-focus="false"
     clearable
-    placeholder="Please Input"
+    placeholder="Search Category"
     @select="handleSelection"
   />
 </template>
@@ -58,4 +58,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+:global(.el-autocomplete) {
+  margin: 0 5px;
+}
+</style>
