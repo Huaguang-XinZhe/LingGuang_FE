@@ -4,7 +4,7 @@
   <!-- 套了个 container 就不会影响外边的 main 区域了（不会让 main 区域出现滚动条） -->
   <div class="container">
     <h2 contenteditable>{{ title }}</h2>
-    <el-scrollbar class="scroll-container">
+    <el-scrollbar class="scroll-container" ref="scrollContainer">
       <MainItem
         v-for="input in inputs"
         :key="input.id"
@@ -17,34 +17,28 @@
 
 <script setup lang="ts">
 import MainItem from "./MainItem.vue";
+import { useListStore } from "@/stores/listStore";
+import { onMounted, ref } from "vue";
+import type { ScrollIns } from "@/types";
+import { useScrollStore } from "@/stores/scrollStore";
+
 // 宏定义，接收父组件传来的标题
 defineProps({
   title: String,
 });
+
 // 定义非响应式的数据（数组，里边是一个个对象）
-const inputs = [
-  {
-    id: 1,
-    content:
-      "待办1的<br />sdfjdkfjd sfkd<br />jkfwo c监控疯狂反<br />倒发到付三分扫地k待办1的<br />sdfjdkfjd sfkd<br />jkfwo c监控疯狂反<br />倒发到付三分扫地k",
-  },
-  {
-    id: 2,
-    content: "待办2的内容",
-  },
-  {
-    id: 3,
-    content: "待办3的内容",
-  },
-  {
-    id: 4,
-    content: "待办4的内容",
-  },
-  {
-    id: 5,
-    content: "待办5的内容",
-  },
-];
+const listStore = useListStore();
+const inputs = listStore.list;
+const scrollContainer = ref<ScrollIns>();
+const scrollStore = useScrollStore();
+
+onMounted(() => {
+  // 挂在的时候 scrollContainer.value 是有值的
+  // console.log("挂载", scrollContainer.value);
+  // 下边的设置方法不能放在外边（setup 里），那时的 scrollContainer.value 还是 undefined
+  scrollStore.setScrollIns(scrollContainer.value);
+});
 </script>
 
 <style scoped>
