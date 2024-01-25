@@ -5,11 +5,7 @@
   <div class="container">
     <h2 contenteditable>{{ title }}</h2>
     <el-scrollbar class="scroll-container" ref="scrollContainer">
-      <MainItem
-        v-for="input in inputs"
-        :key="input.id"
-        :content="input.content"
-      />
+      <MainItem v-for="input in inputs" :key="input.id" :item="input" />
       <!--      <Test />-->
     </el-scrollbar>
   </div>
@@ -29,6 +25,7 @@ defineProps({
 
 // 定义非响应式的数据（数组，里边是一个个对象）
 const listStore = useListStore();
+// 这里获取的 inputs 是非响应式数据
 const inputs = listStore.list;
 const scrollContainer = ref<ScrollIns>();
 const scrollStore = useScrollStore();

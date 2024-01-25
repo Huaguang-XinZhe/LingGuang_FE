@@ -5,23 +5,32 @@
         >Guidance</el-button
       >
     </el-tooltip>
+    <el-tooltip content="填充到输入框" effect="light">
+      <el-button
+        type="primary"
+        :icon="Position"
+        plain
+        @click="triggerFillInput"
+      />
+    </el-tooltip>
     <el-button
       :icon="CopyDocument"
       type="primary"
       plain
-      class="copy-button"
+      color="#4a4a4a"
     ></el-button>
     <el-button type="danger" :icon="Delete" plain />
   </el-button-group>
 </template>
 
 <script setup lang="ts">
-import { CopyDocument, Delete, Plus } from "@element-plus/icons-vue";
+import { CopyDocument, Delete, Plus, Position } from "@element-plus/icons-vue";
+
+const emits = defineEmits(["trigger-fill-input"]);
+
+function triggerFillInput() {
+  emits("trigger-fill-input");
+}
 </script>
 
-<style scoped>
-.copy-button {
-  border: 1px solid lightgray !important;
-  margin: 0 !important;
-}
-</style>
+<style scoped></style>

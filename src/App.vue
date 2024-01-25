@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import MdInput2 from "@/components/bottom-input/MdInput2.vue";
+import MdInput2 from "@/components/bottom-input/MdInput.vue";
 import LeftAside from "@/components/left-aside/LeftAside.vue";
 import MainList from "@/components/main/MainList.vue";
 import MyHeader from "@/components/header/MyHeader.vue";

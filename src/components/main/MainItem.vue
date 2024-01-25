@@ -5,15 +5,20 @@
     <template #header>
       <PreviewImages />
     </template>
-    <el-text class="text" contenteditable>
-      {{ content }}
+    <el-text
+      class="text"
+      contenteditable
+      @blur="handleBlur"
+      @keydown.ctrl.enter="handleCtrlEnter"
+    >
+      {{ item.content }}
     </el-text>
     <template #footer>
       <el-row justify="space-between" align="middle">
         <el-tag class="tag" round size="large" effect="dark" contenteditable
           >这里放类属呀</el-tag
         >
-        <OperationButtons />
+        <OperationButtons @trigger-fill-input="setItemToPinia" />
       </el-row>
     </template>
   </el-card>
@@ -22,26 +27,25 @@
 <script setup lang="ts">
 import PreviewImages from "@/components/main/PreviewImages.vue";
 import OperationButtons from "@/components/main/OperationButtons.vue";
-// 接收 content
-defineProps({
-  content: String,
+import type { ListItem } from "@/types";
+import type { PropType } from "vue";
+import { useListStore } from "@/stores/listStore";
+import { useItemStore } from "@/stores/itemStore";
+import { requestUpdateItem } from "@/useItemUpdater";
+
+// defineProps({
+//   item: Object as PropType<ListItem>, // 这种写法在模板中应用的时候，item 有可能是 undefined
+// });
+
+const props = defineProps({
+  item: {
+    type: Object as PropType<ListItem>,
+    required: true, // 加个 required 就不会是 undefined 了
+  },
 });
 
-function handleDragStart(e: DragEvent) {
-  //   // console.log(e);
-  //   const draggingElement = e.target as HTMLElement;
-  //
-  //   // 改变拖拽元素的大小（不能这样改，这会直接改变原拖拽元素的大小）
-  //   // draggingElement.style.width = "100px";
-  //   // draggingElement.style.height = "100px";
-  //
-  //   // 改变拖拽 ghost 的大小
-  //   const ghostElement = draggingElement.cloneNode(true) as HTMLElement;
-  //   ghostElement.style.width = "100px";
-  //   ghostElement.style.height = "20px";
-  //   document.body.appendChild(ghostElement);
-  //   e.dataTransfer?.setDragImage(ghostElement, 0, 0);
-}
+const listStore = useListStore();
+const itemStore = useItemStore();
 
 function handleDragEnd(e: DragEvent) {
   // 相对于视口的位置
@@ -54,6 +58,33 @@ function handleDragEnd(e: DragEvent) {
   // const elements = document.elementsFromPoint(x, y);
   // console.log(elements);
 }
+
+function handleCtrlEnter(e: KeyboardEvent) {
+  // console.log(e);
+  const span = e.target as HTMLSpanElement;
+  // 让这个 span 失去焦点
+  span.blur();
+  // updateItem(span.innerText); // 这里无需再处理了，blur 事件会处理
+}
+
+function handleBlur(e: FocusEvent) {
+  // lastContent 不会发生变化
+  // console.log(lastContent);
+  const target = e.target as HTMLSpanElement;
+  const text = target.innerText;
+  // console.log(e, target, text);
+  // 相同就返回，不同就更新列表中的数据
+  const item = props.item;
+  if (item.content === text) return;
+  listStore.updateItem(item, text);
+  // console.log(listStore.list);
+  requestUpdateItem(item.id, text);
+}
+
+// 点击按钮组的填充按钮会触发这个方法，进而将当前数据设置到 Pinia
+function setItemToPinia() {
+  itemStore.setItem(props.item);
+}
 </script>
 
 <style scoped>
@@ -61,6 +92,7 @@ function handleDragEnd(e: DragEvent) {
   margin: 15px 20px;
   border-radius: 10px;
   user-select: none;
+  min-width: 500px;
 }
 .tag:focus {
   outline: none;

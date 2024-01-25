@@ -1,9 +1,5 @@
 import { defineStore } from "pinia";
-
-interface ListItem {
-  id: number;
-  content: string;
-}
+import type { ListItem } from "@/types";
 
 export const useListStore = defineStore("list", {
   state: () => ({
@@ -38,6 +34,16 @@ export const useListStore = defineStore("list", {
   actions: {
     addToList(item: ListItem) {
       this.list.push(item);
+    },
+    // 更新某个 item 的数据
+    updateItem(itemObj: ListItem, newContent: string) {
+      // 找到需要更新的对象的位置（索引）
+      const index = this.list.findIndex((item) => item.id === itemObj.id);
+      // 根据索引替换数组中的元素（对象）
+      this.list.splice(index, 1, {
+        ...itemObj,
+        content: newContent, // content 属性替换为新的内容
+      });
     },
   },
 });
