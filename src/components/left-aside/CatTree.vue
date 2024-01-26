@@ -1,16 +1,7 @@
 <template>
-  <!-- :props="{ class: customNodeClass }"，怎么设置这个没用呢？ -->
-  <div class="cat-add-item">
-    <el-input
-      placeholder="新增类属"
-      v-model="input"
-      :prefix-icon="Plus"
-      clearable
-      @keydown.enter="addCategory"
-    />
-  </div>
-  <!--    这个 data 可以是响应式数据！-->
+  <CatAddItem :data-source="dataSource" />
   <el-scrollbar class="container">
+    <!--    这个 data 可以是响应式数据！-->
     <el-tree
       :data="dataSource"
       node-key="id"
@@ -27,178 +18,79 @@
       ref="catTreeRef"
     >
       <template #default="{ node, data }">
-        <el-text
-          :class="node.level === 1 ? 'parent-node' : null"
-          class="cat-name"
-          truncated
-          :title="node.label.length > 9 ? node.label : null"
-        >
-          {{ node.label }} {{ data.count > 0 ? `(${data.count})` : null }}
-        </el-text>
-        <el-popconfirm
-          width="200"
-          title="这将会删除该类属下的所有数据，并且无法恢复，您确认删除吗？"
-          icon-color="rgb(245, 108, 108)"
-          @confirm="confirmDelete(data)"
-        >
-          <template #reference>
-            <MyClickIcon
-              icon="delete.svg"
-              :size="16"
-              class="delete-button"
-              @click="deleteButtonClick($event)"
-            />
-          </template>
-        </el-popconfirm>
+        <CatTreeNode :node="node" :data="data" />
       </template>
     </el-tree>
   </el-scrollbar>
-  <!--    <el-button :icon="Plus" round class="add-category" @click="addCategory"-->
-  <!--      >新增类属</el-button-->
-  <!--    >-->
 </template>
 
 <script setup lang="ts">
 import IconExpand from "@/assets/icons/IconExpand.vue";
-import type Node from "element-plus/es/components/tree/src/model/node";
-import type { DragEvents } from "element-plus/es/components/tree/src/model/useDragNode";
-import type { NodeDropType } from "element-plus/es/components/tree/src/tree.type";
-import { Plus } from "@element-plus/icons-vue";
-import { reactive, type Ref, ref } from "vue";
-import { ElMessage, ElTree } from "element-plus";
+import { reactive, ref } from "vue";
+import { ElTree } from "element-plus";
 import type { TreeKey } from "element-plus/es/components/tree-v2/src/types";
-import MyClickIcon from "@/components/custom/MyClickIcon.vue";
-
-interface Tree {
-  id: number;
-  label: string;
-  count?: number;
-  children?: Tree[];
-}
+import { useDragAndDrop } from "@/hooks/useDragAndDrop";
+import type { PagingQueryResponse, Tree } from "@/types";
+import CatTreeNode from "@/components/left-aside/CatTreeNode.vue";
+import CatAddItem from "@/components/left-aside/CatAddItem.vue";
+import axios from "axios";
+import { useListStore } from "@/stores/listStore";
 
 const defaultProps = {
   children: "children",
   label: "label",
 };
-
-let innerDiv: HTMLDivElement | null = null;
 // 定义同名 ref，引用 el-tree 组件（可指定构造函数的实例类型）
 const catTreeRef = ref<InstanceType<typeof ElTree>>();
-
-function handleDragStart(draggingNode: Node, ev: DragEvents) {
-  // 如果拖动节点是一个父节点，就调用它的收起方法
-  if (!draggingNode.isLeaf) {
-    draggingNode.collapse();
-  }
-}
-
-function handleDragEnter(draggingNode: Node, dropNode: Node, ev: DragEvents) {
-  // 如果拖动节点和放置节点一致，那就别加样式了
-  if (draggingNode.key === dropNode.key) return;
-  // 为 dropNode 添加自定义样式类
-  // 使用querySelector选择具有特定data-key的div元素内的第一个div元素
-  innerDiv = getInnerDiv(dropNode.key as number);
-  // 如果找到了元素，则添加自定义类
-  innerDiv?.classList.add("drag-over-node");
-}
-
-function handleDragLeave(draggingNode: Node, dropNode: Node, ev: DragEvents) {
-  // 为 dropNode 移除自定义样式类（还有可能没移除，因为拖的距离不够，根本就没有触发）
-
-  innerDiv?.classList.remove("drag-over-node");
-}
-
-function handleDragEnd(
-  draggingNode: Node,
-  dropNode: Node,
-  dropType: NodeDropType, // 可能为空
-  ev: DragEvents,
-) {
-  // 拖动结束的时候再移除一次，应对拖动距离不够，没有触发 handleDragLeave 的情况
-  innerDiv?.classList.remove("drag-over-node");
-}
-
-/**
- * 根据 id 拿到指定 Item 内部的 div 元素
- * @param id 数据中的 key
- */
-function getInnerDiv(id: number): HTMLDivElement | null {
-  return document.querySelector(`div[data-key="${id}"] > div`);
-}
-
-const input = ref<string>("");
-// 必须放在外边，否则就都是一样的了
-let baseId = 100;
-
-function addCategory() {
-  if (!validateInput(input, dataSource)) {
-    return;
-  }
-  dataSource.unshift({
-    id: baseId++,
-    label: input.value.trim(),
-  });
-  // 清空
-  input.value = "";
-}
-
-function validateInput(input: Ref<string>, data: Tree[]) {
-  const trimmedValue = input.value.trim();
-
-  // 检查名称是否为空（包括全是空格的情况）
-  if (!trimmedValue) {
-    ElMessage({
-      message: "名称不能为空哦😊",
-      type: "warning",
-    });
-    input.value = ""; // 清除可能的空格输入
-    return false;
-  }
-
-  // 检查名称是否存在
-  // 这里用 some 比 flatMap 更高效，因为只需要通过判断拿到一个布尔值
-  const catExist = data.some((item) => item.label === trimmedValue);
-  if (catExist) {
-    ElMessage({
-      message: "名称存在了哦🙃",
-      type: "warning",
-    });
-    input.value = ""; // 清除输入
-    return false;
-  }
-
-  // 验证通过
-  return true;
-}
+const {
+  handleDragStart,
+  handleDragEnter,
+  handleDragLeave,
+  handleDragEnd,
+  getInnerDiv,
+} = useDragAndDrop();
+const listStore = useListStore();
 
 // 记录上次点击 Item 的 key
 let lastClickKey: TreeKey = -1;
 function handleClick(data: Tree) {
+  const currentClickKey = data.id;
   // 如果点击的是同一个 Item，就不用再处理了
-  if (data.id === lastClickKey) return;
-  // 如果点击的是不同的 Item，就把上次点击的 Item 的样式去掉
-  if (data.id !== lastClickKey) {
-    const lastClickedDiv = getInnerDiv(lastClickKey as number);
-    lastClickedDiv?.classList.remove("clicked");
-  }
-  // 然后再给这次点击的 Item 添加样式
-  const clickedDiv = getInnerDiv(data.id);
-  clickedDiv?.classList.add("clicked");
+  if (currentClickKey === lastClickKey) return;
+  handleStyle(currentClickKey);
+  // 请求查询（第一页）
+  querySampleInputs(data.label);
   // 更新 lastClickKey
-  lastClickKey = data.id;
+  lastClickKey = currentClickKey;
 }
 
-function deleteButtonClick(ev: MouseEvent) {
-  // 阻止事件冒泡
-  ev.stopPropagation();
+/**
+ * 请求分页查询传入类属对应的输入列表
+ * @param categoryName 类属名称
+ * @param pageNum 页码，默认为 0
+ */
+function querySampleInputs(categoryName: string, pageNum: number = 0) {
+  axios
+    .get(`http://localhost:8080/inputs/${categoryName}?pageNum=${pageNum}`)
+    .then((response) => {
+      console.log(response.data);
+      const result: PagingQueryResponse = response.data.data;
+      listStore.setTitle(categoryName);
+      listStore.setList(result.sampleInputs.reverse()); // 设置反转列表，让最新的改动放在最下边
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 }
 
-function confirmDelete(data: Tree) {
-  // data 打印出来其实是 Proxy（Object）类型，但声明为其 Target 对象的类型也没问题
-  // console.log(data);
-  // 也能直接访问 Target 对象的属性
-  // console.log(data.id);
-  catTreeRef.value?.remove(data);
+// 点击样式处理
+function handleStyle(currentClickKey: number) {
+  // 如果点击的是不同的 Item，就把上次点击的 Item 的样式去掉
+  const lastClickedDiv = getInnerDiv(lastClickKey as number);
+  lastClickedDiv?.classList.remove("clicked");
+  // 然后再给这次点击的 Item 添加样式
+  const clickedDiv = getInnerDiv(currentClickKey);
+  clickedDiv?.classList.add("clicked");
 }
 
 // 要给 reactive、ref 添加类型直接通过泛型指定
@@ -259,17 +151,9 @@ const dataSource = reactive<Tree[]>([
 :deep(.el-tree-node__content:hover) {
   background-color: #ebecef;
 }
-.delete-button {
-  position: absolute;
-  right: 15px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+/*这个放在这里才有效，不能放在子组件中*/
 :deep(.el-tree-node__content:hover) .delete-button {
   opacity: 1;
-}
-.parent-node {
-  font-weight: bold;
 }
 :deep(.el-tree-node__expand-icon) {
   margin-left: 15px;
@@ -280,27 +164,8 @@ const dataSource = reactive<Tree[]>([
   background-color: rgba(53, 116, 240, 0.1);
   margin: 0 1px;
 }
-.cat-add-item {
-  padding: 5px;
-}
-.cat-name {
-  padding-right: 20px;
-}
-/* 定义一个背景色动画 */
-/*@keyframes backgroundChange {
-  from {
-    background-color: rgb(246, 248, 250);
-  }
-  to {
-    background-color: rgb(212, 226, 255);
-  }
-}*/
 :deep(.clicked) {
   /*这里必须加 !important，否则有可能被 Item 的背景或 hover 的背景覆盖*/
   background-color: rgb(212, 226, 255) !important;
-  /*border-radius: 5px;*/
-  /*animation-name: backgroundChange;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;*/
 }
 </style>

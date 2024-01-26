@@ -28,7 +28,7 @@ import { ElInput, ElMessage } from "element-plus";
 import { useListStore } from "@/stores/listStore";
 import { useScrollStore } from "@/stores/scrollStore";
 import { useItemStore } from "@/stores/itemStore";
-import { requestUpdateItem } from "@/useItemUpdater";
+import { requestUpdateItem } from "@/hooks/useItemUpdater";
 
 type ClassifierType = "TRIE" | "REGEX" | "AI";
 
@@ -91,7 +91,7 @@ function addItem() {
   // 数据库新增项
   requestAddItem();
   // 列表新增项
-  listStore.addToList({
+  listStore.addItem({
     id: 5,
     content: textarea.value,
   });
@@ -99,9 +99,9 @@ function addItem() {
 
 function updateItem() {
   // 数据库更新项
-  requestUpdateItem(itemStore.item.id, textarea.value);
+  requestUpdateItem(itemStore.item!.id, textarea.value);
   // 列表更新项
-  listStore.updateItem(itemStore.item, textarea.value);
+  listStore.updateItem(itemStore.item!, textarea.value);
 }
 
 function handleInput() {

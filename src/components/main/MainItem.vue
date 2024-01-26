@@ -15,7 +15,13 @@
     </el-text>
     <template #footer>
       <el-row justify="space-between" align="middle">
-        <el-tag class="tag" round size="large" effect="dark" contenteditable
+        <el-tag
+          class="tag"
+          round
+          size="large"
+          effect="dark"
+          contenteditable
+          :style="{ visibility: 'hidden' }"
           >这里放类属呀</el-tag
         >
         <OperationButtons @trigger-fill-input="setItemToPinia" />
@@ -27,19 +33,19 @@
 <script setup lang="ts">
 import PreviewImages from "@/components/main/PreviewImages.vue";
 import OperationButtons from "@/components/main/OperationButtons.vue";
-import type { ListItem } from "@/types";
+import type { SampleInput } from "@/types";
 import type { PropType } from "vue";
 import { useListStore } from "@/stores/listStore";
 import { useItemStore } from "@/stores/itemStore";
-import { requestUpdateItem } from "@/useItemUpdater";
+import { requestUpdateItem } from "@/hooks/useItemUpdater";
 
 // defineProps({
-//   item: Object as PropType<ListItem>, // 这种写法在模板中应用的时候，item 有可能是 undefined
+//   item: Object as PropType<SampleInput>, // 这种写法在模板中应用的时候，item 有可能是 undefined
 // });
 
 const props = defineProps({
   item: {
-    type: Object as PropType<ListItem>,
+    type: Object as PropType<SampleInput>,
     required: true, // 加个 required 就不会是 undefined 了
   },
 });

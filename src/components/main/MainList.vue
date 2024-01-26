@@ -3,9 +3,16 @@
 <template>
   <!-- 套了个 container 就不会影响外边的 main 区域了（不会让 main 区域出现滚动条） -->
   <div class="container">
-    <h2 contenteditable>{{ title }}</h2>
-    <el-scrollbar class="scroll-container" ref="scrollContainer">
-      <MainItem v-for="input in inputs" :key="input.id" :item="input" />
+    <el-empty description="暂无数据" v-show="!hasData" />
+    <!--   使用 v-show 的话就会加载 DOM，但用 display: none 控制其显示 -->
+    <!--    别在下边两个元素的外边再套一层，会让最外层出现滚动条，而 List 容器的滚动条消失，影响滚动-->
+    <h2 contenteditable v-show="hasData">{{ listStore.title }}</h2>
+    <el-scrollbar
+      class="scroll-container"
+      ref="scrollContainer"
+      v-show="hasData"
+    >
+      <MainItem v-for="input in listStore.list" :key="input.id" :item="input" />
       <!--      <Test />-->
     </el-scrollbar>
   </div>
@@ -14,21 +21,30 @@
 <script setup lang="ts">
 import MainItem from "./MainItem.vue";
 import { useListStore } from "@/stores/listStore";
-import { onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import type { ScrollIns } from "@/types";
 import { useScrollStore } from "@/stores/scrollStore";
 
-// 宏定义，接收父组件传来的标题
-defineProps({
-  title: String,
-});
-
 // 定义非响应式的数据（数组，里边是一个个对象）
 const listStore = useListStore();
-// 这里获取的 inputs 是非响应式数据
-const inputs = listStore.list;
 const scrollContainer = ref<ScrollIns>();
 const scrollStore = useScrollStore();
+// 有无数据的计算属性
+const hasData = computed(() => listStore.list.length > 0);
+
+// 监听 listStore 中的 list，如果有数据，就滚动到底部
+watch(
+  () => listStore.list,
+  (newValue) => {
+    if (newValue.length > 0) {
+      console.log("监视到 list 变化，且有数据");
+      // 滚动到底部
+      nextTick(() => {
+        scrollStore.scrollToBottom();
+      });
+    }
+  },
+);
 
 onMounted(() => {
   // 挂在的时候 scrollContainer.value 是有值的
@@ -44,8 +60,12 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 }
+/*.el-empty {
+  margin-top: 90px;
+}*/
 h2 {
-  margin: 20px;
+  padding: 20px;
+  border-bottom: 0.1px solid #efebeb;
 }
 h2:focus {
   outline: none;

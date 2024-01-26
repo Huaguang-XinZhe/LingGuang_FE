@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
-import type { ListItem } from "@/types";
+import type { SampleInput } from "@/types";
 
 export const useItemStore = defineStore("item", {
   state: () => ({
-    item: null as ListItem | null,
+    item: null as SampleInput | null,
   }),
   actions: {
-    setItem(item: ListItem) {
+    setItem(item: SampleInput) {
       this.item = item;
     },
     reset() {

@@ -14,7 +14,7 @@
         <!-- 注意，千万不要忘记了 `-`，虽然它不会报错！ -->
         <!-- 会自动填充所有可用空间-->
         <el-main>
-          <MainList title="待办" />
+          <MainList />
           <!--          <Test />-->
           <!--          <TestDraggable />-->
           <!--          <TestBase />-->
