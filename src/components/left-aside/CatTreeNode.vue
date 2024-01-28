@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <el-text
     :class="node.level === 1 ? 'parent-node' : null"
@@ -5,8 +7,7 @@
     truncated
     :title="node.label.length > 9 ? node.label : null"
   >
-    {{ node.label }}
-    {{ data.count && data.count > 0 ? `(${data.count})` : null }}
+    {{ node.label }} {{ count }}
   </el-text>
   <!--        <el-popconfirm-->
   <!--          width="200"-->
@@ -28,10 +29,12 @@
 <script setup lang="ts">
 import MyClickIcon from "@/components/custom/MyClickIcon.vue";
 import type { PropType } from "vue";
+import { computed } from "vue";
 import type { Tree } from "@/types";
 import Node from "element-plus/es/components/tree/src/model/node";
+import { useListStore } from "@/stores/listStore";
 
-defineProps({
+const props = defineProps({
   node: {
     type: Object as PropType<Node>,
     required: true,
@@ -40,6 +43,13 @@ defineProps({
     type: Object as PropType<Tree>,
     required: true,
   },
+});
+
+const listStore = useListStore();
+
+// 根据类属名获取其记录数
+const count = computed(() => {
+  return listStore.getCountByName(props.node.label);
 });
 
 function deleteButtonClick(ev: MouseEvent) {

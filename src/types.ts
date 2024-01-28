@@ -11,7 +11,7 @@ export interface SampleInput {
 
 export interface PagingQueryResponse {
   sampleInputs: SampleInput[]; // 这里用逗号也可以耶
-  total: number;
+  total?: number;
 }
 
 export interface Result {
@@ -25,4 +25,9 @@ export interface Tree {
   label: string;
   count?: number;
   children?: Tree[];
+}
+
+export interface CatCount {
+  name: string;
+  total: number;
 }

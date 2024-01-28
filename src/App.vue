@@ -14,7 +14,7 @@
         <!-- 注意，千万不要忘记了 `-`，虽然它不会报错！ -->
         <!-- 会自动填充所有可用空间-->
         <el-main>
-          <MainList />
+          <!--          <MainList />-->
           <!--          <Test />-->
           <!--          <TestDraggable />-->
           <!--          <TestBase />-->
@@ -23,6 +23,9 @@
           <!--          <TestTree3 />-->
           <!--          <TestClick />-->
           <!--          <TestHover />-->
+          <!--          <TestInfiniteScroll />-->
+          <!--          <TestV3InfiniteLoading />-->
+          <TestELInfiniteScroll />
         </el-main>
         <el-footer>
           <!-- <MdInput /> -->
@@ -38,19 +41,19 @@
 <script lang="ts" setup>
 import MdInput2 from "@/components/bottom-input/MdInput.vue";
 import LeftAside from "@/components/left-aside/LeftAside.vue";
-import MainList from "@/components/main/MainList.vue";
 import MyHeader from "@/components/header/MyHeader.vue";
+import TestELInfiniteScroll from "@/components/main/MainList.vue";
 </script>
 
 <style scoped>
 .el-header {
-  height: 8vh;
+  height: 7vh;
   background-color: rgb(242, 242, 242);
   border-bottom: 1px solid rgb(208, 215, 222);
   padding: 0;
 }
 .below-header {
-  height: 92vh;
+  height: 93vh;
 }
 .left-aside {
   width: 200px;
@@ -63,7 +66,7 @@ import MyHeader from "@/components/header/MyHeader.vue";
   border-left: 1px solid rgb(227, 230, 232);
 }
 .el-main {
-  max-width: 800px;
+  width: 100%;
   background-color: rgb(255, 255, 255);
   padding: 0;
   margin: 0 auto;

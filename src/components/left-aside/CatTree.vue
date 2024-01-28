@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <CatAddItem :data-source="dataSource" />
   <el-scrollbar class="container">
@@ -26,15 +28,14 @@
 
 <script setup lang="ts">
 import IconExpand from "@/assets/icons/IconExpand.vue";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { ElTree } from "element-plus";
 import type { TreeKey } from "element-plus/es/components/tree-v2/src/types";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
-import type { PagingQueryResponse, Tree } from "@/types";
+import type { Tree } from "@/types";
 import CatTreeNode from "@/components/left-aside/CatTreeNode.vue";
 import CatAddItem from "@/components/left-aside/CatAddItem.vue";
-import axios from "axios";
-import { useListStore } from "@/stores/listStore";
+import { useAppStore } from "@/stores/appStore";
 
 const defaultProps = {
   children: "children",
@@ -49,38 +50,34 @@ const {
   handleDragEnd,
   getInnerDiv,
 } = useDragAndDrop();
-const listStore = useListStore();
+const appStore = useAppStore();
+
+onMounted(() => {
+  // 默认选中
+  // 通过 appStore 中的 currentTitle 来获取当前选中的类属
+  const defaultTitle = appStore.currentTitle;
+  // 通过类属名称来获取对应的 Tree 对象
+  const treeObj = dataSource.find((tree) => tree.label === defaultTitle);
+  // 获取类属名对应的 key（也就是数据源中的 id）
+  const defaultKey = treeObj?.id as number;
+  // 添加点击样式
+  getInnerDiv(defaultKey)?.classList.add("clicked");
+  // 更新 lastClickKey
+  lastClickKey = defaultKey;
+});
 
 // 记录上次点击 Item 的 key
 let lastClickKey: TreeKey = -1;
+
 function handleClick(data: Tree) {
   const currentClickKey = data.id;
   // 如果点击的是同一个 Item，就不用再处理了
   if (currentClickKey === lastClickKey) return;
   handleStyle(currentClickKey);
-  // 请求查询（第一页）
-  querySampleInputs(data.label);
+  // 更新全局状态 currentTitle
+  appStore.setCurrentTitle(data.label);
   // 更新 lastClickKey
   lastClickKey = currentClickKey;
-}
-
-/**
- * 请求分页查询传入类属对应的输入列表
- * @param categoryName 类属名称
- * @param pageNum 页码，默认为 0
- */
-function querySampleInputs(categoryName: string, pageNum: number = 0) {
-  axios
-    .get(`http://localhost:8080/inputs/${categoryName}?pageNum=${pageNum}`)
-    .then((response) => {
-      console.log(response.data);
-      const result: PagingQueryResponse = response.data.data;
-      listStore.setTitle(categoryName);
-      listStore.setList(result.sampleInputs.reverse()); // 设置反转列表，让最新的改动放在最下边
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
 }
 
 // 点击样式处理

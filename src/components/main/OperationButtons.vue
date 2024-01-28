@@ -17,7 +17,7 @@
       :icon="CopyDocument"
       type="primary"
       plain
-      color="#4a4a4a"
+      color="#858585"
     ></el-button>
     <el-button type="danger" :icon="Delete" plain />
   </el-button-group>
