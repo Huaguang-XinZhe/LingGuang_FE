@@ -1,31 +1,5 @@
 <!-- @format -->
 
-<template>
-  <CatAddItem :data-source="dataSource" />
-  <el-scrollbar class="container">
-    <!--    这个 data 可以是响应式数据！-->
-    <el-tree
-      :data="dataSource"
-      node-key="id"
-      draggable
-      default-expand-all
-      render-after-expand
-      :icon="IconExpand"
-      :props="defaultProps"
-      @node-drag-start="handleDragStart"
-      @node-drag-enter="handleDragEnter"
-      @node-drag-leave="handleDragLeave"
-      @node-drag-end="handleDragEnd"
-      @node-click="handleClick"
-      ref="catTreeRef"
-    >
-      <template #default="{ node, data }">
-        <CatTreeNode :node="node" :data="data" />
-      </template>
-    </el-tree>
-  </el-scrollbar>
-</template>
-
 <script setup lang="ts">
 import IconExpand from "@/assets/icons/IconExpand.vue";
 import { onMounted, reactive, ref } from "vue";
@@ -131,6 +105,32 @@ const dataSource = reactive<Tree[]>([
   },
 ]);
 </script>
+
+<template>
+  <CatAddItem :data-source="dataSource" />
+  <el-scrollbar class="container">
+    <!--    这个 data 可以是响应式数据！-->
+    <el-tree
+      :data="dataSource"
+      node-key="id"
+      draggable
+      default-expand-all
+      render-after-expand
+      :icon="IconExpand"
+      :props="defaultProps"
+      @node-drag-start="handleDragStart"
+      @node-drag-enter="handleDragEnter"
+      @node-drag-leave="handleDragLeave"
+      @node-drag-end="handleDragEnd"
+      @node-click="handleClick"
+      ref="catTreeRef"
+    >
+      <template #default="{ node, data }">
+        <CatTreeNode :node="node" :data="data" />
+      </template>
+    </el-tree>
+  </el-scrollbar>
+</template>
 
 <style scoped>
 .container {

@@ -1,31 +1,4 @@
 <!-- @format -->
-
-<template>
-  <el-text
-    :class="node.level === 1 ? 'parent-node' : null"
-    class="cat-name"
-    truncated
-    :title="node.label.length > 9 ? node.label : null"
-  >
-    {{ node.label }} {{ count }}
-  </el-text>
-  <!--        <el-popconfirm-->
-  <!--          width="200"-->
-  <!--          title="这将会删除该类属下的所有数据，并且无法恢复，您确认删除吗？"-->
-  <!--          icon-color="rgb(245, 108, 108)"-->
-  <!--          @confirm="confirmDelete(data)"-->
-  <!--        >-->
-  <!--        <template #reference>-->
-  <MyClickIcon
-    icon="delete.svg"
-    :size="16"
-    class="delete-button"
-    @click="deleteButtonClick($event)"
-  />
-  <!--        </template>-->
-  <!--        </el-popconfirm>-->
-</template>
-
 <script setup lang="ts">
 import MyClickIcon from "@/components/custom/MyClickIcon.vue";
 import type { PropType } from "vue";
@@ -65,6 +38,32 @@ function deleteButtonClick(ev: MouseEvent) {
 //   catTreeRef.value?.remove(data);
 // }
 </script>
+
+<template>
+  <el-text
+    :class="node.level === 1 ? 'parent-node' : null"
+    class="cat-name"
+    truncated
+    :title="node.label.length > 9 ? node.label : null"
+  >
+    {{ node.label }} {{ count }}
+  </el-text>
+  <!--        <el-popconfirm-->
+  <!--          width="200"-->
+  <!--          title="这将会删除该类属下的所有数据，并且无法恢复，您确认删除吗？"-->
+  <!--          icon-color="rgb(245, 108, 108)"-->
+  <!--          @confirm="confirmDelete(data)"-->
+  <!--        >-->
+  <!--        <template #reference>-->
+  <MyClickIcon
+    icon="delete.svg"
+    :size="16"
+    class="delete-button"
+    @click="deleteButtonClick($event)"
+  />
+  <!--        </template>-->
+  <!--        </el-popconfirm>-->
+</template>
 
 <style scoped>
 .delete-button {

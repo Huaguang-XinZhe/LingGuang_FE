@@ -10,8 +10,10 @@ const appStore = useAppStore();
 // 所以这个值是始终和类属列表的长度保持一致的
 // 全局状态（类属-total 键值对列表）
 const currentTotalMap = new Map<string, number>();
-// 我还得存储一个旧的 total 键值对列表，用于判断是否还有更多数据
-const oldTotalMap = new Map<string, number>();
+// // 我还得存储一个旧的 total 键值对列表，用于判断是否还有更多数据
+// const oldTotalMap = new Map<string, number>();
+// 由于每次监听到变化后 oldTotalMap 都会被重置，所以，它里边最多只会存储一个键值对，这就不需要 Map 了，可以用元组代替
+let oldTotal: [string, number] = ["", 0];
 
 const inputs = reactive<SampleInput[]>([]);
 const loading = ref(false);
@@ -39,10 +41,13 @@ watch(
   () => {
     console.log("categoryName 变化了");
     pageNum = 0;
-    inputs.splice(0, inputs.length); // 清空数组
+    // 不能直接给一个 reactive 响应式变量重新赋值，这会导致由它产生的计算属性失效，它计算的还是之前的那个响应式对象，而不是现在的这个！
+    // inputs = [];
     // console.log("noMore", noMore.value);
     // 必须重置 noMore，以避免上次滚动结果的影响！
     noMore.value = false;
+    // 必须重置 oldTotal
+    oldTotal = ["", 0];
     load();
   },
 );
@@ -62,25 +67,28 @@ const load = async () => {
   // 如果 oldTotalMap 中没有这个类属，说明是第一次请求，就直接请求
   // console.log("categoryName", categoryName); // 为什么这里第二次请求的时候就是 undefined？
   // 因为没在模板中给 load 传参，所以获取不到，但问题是无限滚动指令绑定的函数又不能传参，所以只能去掉了！
-  if (!oldTotalMap.has(categoryName)) {
+  if (oldTotal[0] !== categoryName) {
     console.log("第一次请求");
     firstLoad.value = true;
-    await loadInner(categoryName);
+    await loadInner(categoryName, 0, true);
     firstLoad.value = false;
-  } else if (
-    oldTotalMap.get(categoryName)! < currentTotalMap.get(categoryName)!
-  ) {
+  } else if (oldTotal[1] < currentTotalMap.get(categoryName)!) {
     // oldTotalMap 中有这个类属，说明不是第一次请求，就要判断是否还有更多数据
     console.log("还有更多数据");
     pageNum++; // 请求下一页
     await loadInner(categoryName, pageNum);
   } else {
+    console.log("没有更多数据");
     // 如果旧的 total 大于等于当前的 total，说明没有更多数据了，就不用请求了
     noMore.value = true;
   }
 };
 
-const loadInner = async (categoryName: string, pageNum: number = 0) => {
+const loadInner = async (
+  categoryName: string,
+  pageNum: number = 0,
+  isFirstLoad: boolean = false,
+) => {
   try {
     // 即使拥有全局异常处理器，也最好 try-catch，否则会有未捕获的异常
     // 如果旧的 total 小于当前的 total，说明还有更多数据，就可以请求
@@ -91,8 +99,13 @@ const loadInner = async (categoryName: string, pageNum: number = 0) => {
     // console.log(result.sampleInputs);
     const resultLength = result.sampleInputs.length;
     if (resultLength === 0) {
-      // 此时传过来的 total 肯定也是 0，所以说，total 是 0 的话根本就不会设置
-      noMore.value = true;
+      if (isFirstLoad) {
+        // 清空 inputs
+        inputs.splice(0, inputs.length);
+      } else {
+        // 此时传过来的 total 肯定也是 0，所以说，total 是 0 的话根本就不会设置
+        noMore.value = true;
+      }
       return; // 如果没有数据，就不要再继续设置 oldTotal 并添加 input 了
     }
     // oldTotal 是在原来的基础上不断地累加，不能直接设置
@@ -101,15 +114,19 @@ const loadInner = async (categoryName: string, pageNum: number = 0) => {
     // console.log(oldTotalMap[categoryName]);
     // 在 JS 中，赋值操作的左侧必须是一个变量或属性访问，而不能是一个值，所以下面的代码会报错！
     // oldTotalMap.get(categoryName) += resultLength;
-    const oldTotal = oldTotalMap.get(categoryName) || 0; // 获取当前值，如果没有则默认为 0
-    oldTotalMap.set(categoryName, oldTotal + resultLength); // 更新 Map 中的值
+    oldTotal[0] = categoryName;
+    oldTotal[1] += resultLength;
     // 只有 total 传过来了，不为 undefined，才设置
     if (result.total) currentTotalMap.set(categoryName, result.total);
     // 看一下旧的 Map
     // todo：这里可能有点问题，怎么会比 154 还多呢？
     // console.log("oldTotalMap", oldTotalMap);
     // console.log("currentTotalMap", currentTotalMap);
-    inputs.push(...result.sampleInputs);
+    if (isFirstLoad) {
+      inputs.splice(0, inputs.length, ...result.sampleInputs);
+    } else {
+      inputs.push(...result.sampleInputs);
+    }
   } catch (e) {
     // console.log("局部捕获异常", e);
   }
