@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { unclassified } from "@/globals";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
-    currentTitle: "待办", // 默认值
+    currentTitle: unclassified, // 默认值
   }),
   actions: {
     setCurrentTitle(title: string) {

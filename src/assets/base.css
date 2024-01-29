@@ -17,12 +17,12 @@ h2 {
 
 /* 滚动条内部的滑块 */
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(206, 210, 216); /* 滑块的颜色 */
+  background-color: rgb(238, 238, 238); /* 滑块的颜色 */
   border-radius: 10px; /* 滑块的圆角 */
 }
 
 /* 滑块hover效果 */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(188, 193, 198);
+  background: rgb(225, 225, 233);
   cursor: pointer; /* 这个小手不会呈现！ */
 }

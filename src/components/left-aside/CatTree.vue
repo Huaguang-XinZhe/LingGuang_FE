@@ -10,6 +10,9 @@ import type { Tree } from "@/types";
 import CatTreeNode from "@/components/left-aside/CatTreeNode.vue";
 import CatAddItem from "@/components/left-aside/CatAddItem.vue";
 import { useAppStore } from "@/stores/appStore";
+import type Node from "element-plus/es/components/tree/src/model/node";
+import type { AllowDropType } from "element-plus/es/components/tree/src/tree.type";
+import { unclassified } from "@/globals";
 
 const defaultProps = {
   children: "children",
@@ -67,6 +70,12 @@ function handleStyle(currentClickKey: number) {
 // 要给 reactive、ref 添加类型直接通过泛型指定
 const dataSource = reactive<Tree[]>([
   {
+    id: 0,
+    label: "✨ 未分类",
+    count: 0,
+    children: [],
+  },
+  {
     id: 1,
     label: "待办",
     count: 3,
@@ -104,6 +113,22 @@ const dataSource = reactive<Tree[]>([
     children: [],
   },
 ]);
+
+// 是否允许拖拽
+const allowDrag = (node: Node) => {
+  return node.data.label !== unclassified;
+};
+
+// 是否允许放置
+const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) => {
+  // console.log(draggingNode, dropNode, type); // 日志打印速度非常快！
+  // 这里的逻辑是不允许插入到 "未分类" 里边
+  if (dropNode.data.label === unclassified) {
+    return type !== "inner";
+  } else {
+    return true;
+  }
+};
 </script>
 
 <template>
@@ -118,6 +143,8 @@ const dataSource = reactive<Tree[]>([
       render-after-expand
       :icon="IconExpand"
       :props="defaultProps"
+      :allow-drop="allowDrop"
+      :allow-drag="allowDrag"
       @node-drag-start="handleDragStart"
       @node-drag-enter="handleDragEnter"
       @node-drag-leave="handleDragLeave"

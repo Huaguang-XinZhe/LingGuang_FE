@@ -6,6 +6,7 @@ import { computed } from "vue";
 import type { Tree } from "@/types";
 import Node from "element-plus/es/components/tree/src/model/node";
 import { useListStore } from "@/stores/listStore";
+import { unclassified } from "@/globals";
 
 const props = defineProps({
   node: {
@@ -23,6 +24,9 @@ const listStore = useListStore();
 // 根据类属名获取其记录数
 const count = computed(() => {
   return listStore.getCountByName(props.node.label);
+});
+const deleteDisabled = computed(() => {
+  return props.node?.label === unclassified;
 });
 
 function deleteButtonClick(ev: MouseEvent) {
@@ -55,7 +59,9 @@ function deleteButtonClick(ev: MouseEvent) {
   <!--          @confirm="confirmDelete(data)"-->
   <!--        >-->
   <!--        <template #reference>-->
+  <!--  非禁止删除才显示删除按钮-->
   <MyClickIcon
+    v-show="!deleteDisabled"
     icon="delete.svg"
     :size="16"
     class="delete-button"
@@ -74,6 +80,7 @@ function deleteButtonClick(ev: MouseEvent) {
 }
 .cat-name {
   padding-right: 20px;
+  font-size: 16px;
 }
 .parent-node {
   font-weight: bold;
