@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TestFadeText</title>
+    <style>
+      .container {
+        position: relative;
+        width: 500px;
+        background-color: #eee;
+      }
+      h1 {
+        overflow: hidden;
+        /*这会将文本限制为一行*/
+        white-space: nowrap;
+        /* 定义遮罩效果 */
+        mask-image: linear-gradient(to right, black 50%, transparent 100%);
+      }
+      .inner-container {
+        width: 100px;
+        height: 42px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: center;
+        background-color: skyblue;
+        /*让文本竖直居中*/
+        line-height: 42px;
+        /*box-shadow: -20px 0 10px 0 rgba(0, 0, 0, 0.2);*/
+        mask-image: linear-gradient(to left, black 80%, transparent 100%);
+      }
+      h1:hover {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>我是一段文本，我非常的长常常常常好常</h1>
+      <div class="inner-container">模拟图标</div>
+    </div>
+  </body>
+</html>

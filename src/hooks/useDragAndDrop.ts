@@ -6,6 +6,7 @@ export function useDragAndDrop() {
   let innerDiv: HTMLDivElement | null = null;
 
   function handleDragStart(draggingNode: Node, ev: DragEvents) {
+    getInnerDiv(draggingNode.key as number);
     // 如果拖动节点是一个父节点，就调用它的收起方法
     if (!draggingNode.isLeaf) {
       draggingNode.collapse();

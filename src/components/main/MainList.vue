@@ -160,7 +160,7 @@ async function getResult(
         <p v-show="noMore">No more 😥</p>
       </div>
     </div>
-    <el-empty description="暂无数据" v-else />
+    <el-empty description="没有，啥都没有😜" v-else />
   </div>
 </template>
 

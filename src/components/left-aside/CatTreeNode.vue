@@ -25,14 +25,9 @@ const listStore = useListStore();
 const count = computed(() => {
   return listStore.getCountByName(props.node.label);
 });
-const deleteDisabled = computed(() => {
-  return props.node?.label === unclassified;
+const buttonsDisplay = computed(() => {
+  return props.node?.label !== unclassified;
 });
-
-function deleteButtonClick(ev: MouseEvent) {
-  // 阻止事件冒泡
-  ev.stopPropagation();
-}
 
 // function confirmDelete(data: Tree) {
 //   // data 打印出来其实是 Proxy（Object）类型，但声明为其 Target 对象的类型也没问题
@@ -41,13 +36,16 @@ function deleteButtonClick(ev: MouseEvent) {
 //   // console.log(data.id);
 //   catTreeRef.value?.remove(data);
 // }
+
+const handleClick = (ev: MouseEvent) => {
+  ev.stopPropagation();
+};
 </script>
 
 <template>
   <el-text
     :class="node.level === 1 ? 'parent-node' : null"
     class="cat-name"
-    truncated
     :title="node.label.length > 9 ? node.label : null"
   >
     {{ node.label }} {{ count }}
@@ -59,28 +57,44 @@ function deleteButtonClick(ev: MouseEvent) {
   <!--          @confirm="confirmDelete(data)"-->
   <!--        >-->
   <!--        <template #reference>-->
-  <!--  非禁止删除才显示删除按钮-->
-  <MyClickIcon
-    v-show="!deleteDisabled"
-    icon="delete.svg"
-    :size="16"
-    class="delete-button"
-    @click="deleteButtonClick($event)"
-  />
+  <el-row
+    class="hover-display-buttons"
+    justify="space-evenly"
+    v-show="buttonsDisplay"
+  >
+    <el-dropdown trigger="click">
+      <MyClickIcon icon="more.svg" :size="18" @click="handleClick" />
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>重命名</el-dropdown-item>
+          <el-dropdown-item>默认加载</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+    <MyClickIcon icon="delete.svg" :size="16" @click="handleClick" />
+  </el-row>
   <!--        </template>-->
   <!--        </el-popconfirm>-->
 </template>
 
 <style scoped>
-.delete-button {
+.hover-display-buttons {
+  width: 60px;
   position: absolute;
-  right: 15px;
+  right: 0;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  /*transition: opacity 0.8s ease;*/
 }
 .cat-name {
-  padding-right: 20px;
+  max-width: 120px;
+  /*这个 padding-right 很重要，当限制最大宽度的时候，文本多余的部分会溢出到 padding 部分，可见！模糊也是算上了 padding 部分的！*/
+  padding-right: 30px;
+  /*加上这个之后它就不会溢出父容器了，它的总宽度会在父容器的内 padding 的限制下*/
+  /*它自己本身会保 padding（也就是 30px），而压内容（以前是内容干到最大 120px，再加 padding 30 px）*/
+  overflow: hidden;
   font-size: 16px;
+  /* 定义遮罩效果，让文本末端模糊起来 */
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
 }
 .parent-node {
   font-weight: bold;

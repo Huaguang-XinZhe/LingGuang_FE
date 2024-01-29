@@ -64,6 +64,7 @@ function handleStyle(currentClickKey: number) {
   lastClickedDiv?.classList.remove("clicked");
   // 然后再给这次点击的 Item 添加样式
   const clickedDiv = getInnerDiv(currentClickKey);
+  // 找到里边的类名为 hover-display-buttons 的元素，让其背景色变成透明
   clickedDiv?.classList.add("clicked");
 }
 
@@ -164,20 +165,24 @@ const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) => {
   flex-grow: 1;
   padding: 10px 0;
   --el-tree-node-content-height: 40px;
+  --hover-bg: rgb(235, 236, 239);
 }
 :deep(.el-tree-node__content) {
   /*padding: 5px !important;*/
   /*这里不能指定 !important，否则通过 js 添加的缩进就失效了*/
-  padding: 5px 0;
+  padding: 5px 10px;
   background-color: rgb(246, 248, 250);
   position: relative;
 }
 :deep(.el-tree-node__content:hover) {
-  background-color: #ebecef;
+  background-color: var(--hover-bg);
 }
 /*这个放在这里才有效，不能放在子组件中*/
-:deep(.el-tree-node__content:hover) .delete-button {
+:deep(.el-tree-node__content:hover) .hover-display-buttons {
   opacity: 1;
+}
+:deep(.el-tree-node__content:hover) .cat-name {
+  max-width: 80px;
 }
 :deep(.el-tree-node__expand-icon) {
   margin-left: 15px;
