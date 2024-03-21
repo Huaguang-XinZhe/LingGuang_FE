@@ -5,7 +5,7 @@ import type { Result } from "@/types";
 
 export function requestUpdateItem(id: number, content: string) {
   axios
-    .patch(`http://localhost:8080/inputs/${id}`, content, {
+    .patch(`/api/inputs/${id}`, content, {
       headers: {
         "Content-Type": "text/plain",
       },

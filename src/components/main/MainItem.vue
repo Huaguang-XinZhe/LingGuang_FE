@@ -31,8 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import PreviewImages from "@/components/main/PreviewImages.vue";
-import OperationButtons from "@/components/main/OperationButtons.vue";
 import type { SampleInput } from "@/types";
 import type { PropType } from "vue";
 import { useListStore } from "@/stores/listStore";

@@ -10,8 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-
 interface AutocompleteItem {
   value: string; // 这个属性还非得是 value 不可，要不然不会显示
   url: string;

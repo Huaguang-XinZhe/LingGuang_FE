@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import MainItem from "@/components/main/MainItem.vue";
 import type { PagingQueryResponse, SampleInput } from "@/types";
 import axios from "axios";
-import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useAppStore } from "@/stores/appStore";
 
 const appStore = useAppStore();
@@ -137,7 +135,7 @@ async function getResult(
   pageNum: number = 0,
 ): Promise<PagingQueryResponse> {
   const response = await axios.get(
-    `http://localhost:8080/inputs/${categoryName}?pageNum=${pageNum}`,
+    `/api/inputs/${categoryName}?pageNum=${pageNum}`,
   );
   return response.data.data;
 }

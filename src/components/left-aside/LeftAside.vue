@@ -7,11 +7,7 @@
   <ProfileDialog />
 </template>
 
-<script setup lang="ts">
-import ProfileDialog from "@/components/left-aside/ProfileDialog.vue";
-import UserItem from "@/components/left-aside/UserItem.vue";
-import CatTree from "@/components/left-aside/CatTree.vue";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .container {

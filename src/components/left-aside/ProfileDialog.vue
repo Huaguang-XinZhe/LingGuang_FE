@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    width="60%"
+    width="40%"
     center
     :model-value="dialogStore.isDialogVisible"
     @update:model-value="dialogStore.hideDialog()"

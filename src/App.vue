@@ -14,7 +14,7 @@
         <!-- 注意，千万不要忘记了 `-`，虽然它不会报错！ -->
         <!-- 会自动填充所有可用空间-->
         <el-main>
-          <!--          <MainList />-->
+          <MainList />
           <!--          <Test />-->
           <!--          <TestDraggable />-->
           <!--          <TestBase />-->
@@ -25,11 +25,11 @@
           <!--          <TestHover />-->
           <!--          <TestInfiniteScroll />-->
           <!--          <TestV3InfiniteLoading />-->
-          <TestELInfiniteScroll />
+          <!--          <TestELInfiniteScroll />-->
         </el-main>
         <el-footer>
-          <!-- <MdInput /> -->
-          <MdInput2 />
+          <MdInput />
+          <!--          <MdInput2 />-->
           <!-- <ExpandableInput /> -->
         </el-footer>
       </el-container>
@@ -38,12 +38,7 @@
   </el-container>
 </template>
 
-<script lang="ts" setup>
-import MdInput2 from "@/components/bottom-input/MdInput.vue";
-import LeftAside from "@/components/left-aside/LeftAside.vue";
-import MyHeader from "@/components/header/MyHeader.vue";
-import TestELInfiniteScroll from "@/components/main/MainList.vue";
-</script>
+<script lang="ts" setup></script>
 
 <style scoped>
 .el-header {

@@ -1,18 +1,15 @@
 <!-- @format -->
 
 <script setup lang="ts">
-import IconExpand from "@/assets/icons/IconExpand.vue";
-import { onMounted, reactive, ref } from "vue";
-import { ElTree } from "element-plus";
 import type { TreeKey } from "element-plus/es/components/tree-v2/src/types";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import type { Tree } from "@/types";
-import CatTreeNode from "@/components/left-aside/CatTreeNode.vue";
-import CatAddItem from "@/components/left-aside/CatAddItem.vue";
 import { useAppStore } from "@/stores/appStore";
 import type Node from "element-plus/es/components/tree/src/model/node";
 import type { AllowDropType } from "element-plus/es/components/tree/src/tree.type";
 import { unclassified } from "@/globals";
+import { ElTree } from "element-plus";
+import IconExpand from "@/assets/icons/IconExpand.vue";
 
 const defaultProps = {
   children: "children",

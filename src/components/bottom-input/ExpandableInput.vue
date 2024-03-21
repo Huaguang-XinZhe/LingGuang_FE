@@ -13,10 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
 const maxHeight = 580;
-
 const textarea = ref();
 
 // 防抖有待实现！！！

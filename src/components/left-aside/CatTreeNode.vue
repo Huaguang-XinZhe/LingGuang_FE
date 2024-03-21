@@ -1,12 +1,10 @@
 <!-- @format -->
 <script setup lang="ts">
-import MyClickIcon from "@/components/custom/MyClickIcon.vue";
-import type { PropType } from "vue";
-import { computed } from "vue";
 import type { Tree } from "@/types";
 import Node from "element-plus/es/components/tree/src/model/node";
 import { useListStore } from "@/stores/listStore";
 import { unclassified } from "@/globals";
+import type { PropType } from "vue";
 
 const props = defineProps({
   node: {
@@ -63,7 +61,7 @@ const handleClick = (ev: MouseEvent) => {
     v-show="buttonsDisplay"
   >
     <el-dropdown trigger="click">
-      <MyClickIcon icon="more.svg" :size="18" @click="handleClick" />
+      <MyClickIcon icon="more" :size="18" @click="handleClick" />
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>重命名</el-dropdown-item>
@@ -71,7 +69,7 @@ const handleClick = (ev: MouseEvent) => {
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <MyClickIcon icon="delete.svg" :size="16" @click="handleClick" />
+    <MyClickIcon icon="delete" :size="16" @click="handleClick" />
   </el-row>
   <!--        </template>-->
   <!--        </el-popconfirm>-->

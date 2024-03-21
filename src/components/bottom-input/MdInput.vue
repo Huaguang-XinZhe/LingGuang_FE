@@ -22,13 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
-import axios from "axios";
-import { ElInput, ElMessage } from "element-plus";
 import { useListStore } from "@/stores/listStore";
 import { useScrollStore } from "@/stores/scrollStore";
 import { useItemStore } from "@/stores/itemStore";
 import { requestUpdateItem } from "@/hooks/useItemUpdater";
+import axios from "axios";
+import { ElInput, ElMessage } from "element-plus";
 
 type ClassifierType = "TRIE" | "REGEX" | "AI";
 
@@ -63,7 +62,7 @@ watch(
  */
 function requestAddItem() {
   axios
-    .post("http://localhost:8080/inputs", textarea.value, {
+    .post("/api/inputs", textarea.value, {
       headers: {
         "Content-Type": "text/plain",
       },

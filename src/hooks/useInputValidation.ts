@@ -1,6 +1,6 @@
-import { ElMessage } from "element-plus";
 import type { Tree } from "@/types";
 import type { Ref } from "vue";
+import { ElMessage } from "element-plus";
 
 export function useInputValidation() {
   function validateInput(input: Ref<string>, data: Tree[]) {

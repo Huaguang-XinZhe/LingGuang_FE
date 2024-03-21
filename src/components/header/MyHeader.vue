@@ -1,7 +1,7 @@
 <template>
   <el-row justify="space-between" align="middle" class="container">
     <a href="#" target="_self" class="link">
-      <img src="@/assets/element-plus-logo.svg" alt="Logo" class="logo" />
+      <img src="../../assets/element-plus-logo.svg" alt="Logo" class="logo" />
     </a>
     <el-row class="right-container" justify="space-between" align="middle">
       <el-button :icon="Search" round>Search</el-button>
@@ -10,21 +10,14 @@
         :active-action-icon="MoonNight"
         :inactive-action-icon="Sunny"
       />
-      <MyClickIcon
-        icon="translation.svg"
-        @click="handleTranslation"
-        :size="20"
-      />
-      <MyLinkIcon link="https://github.com/Huaguang-XinZhe" icon="github.svg" />
+      <MyClickIcon icon="translate" @click="handleTranslation" :size="20" />
+      <MyLinkIcon link="https://github.com/Huaguang-XinZhe" icon="github" />
     </el-row>
   </el-row>
 </template>
 
 <script setup lang="ts">
 import { MoonNight, Search, Sunny } from "@element-plus/icons-vue";
-import MyLinkIcon from "@/components/custom/MyLinkIcon.vue";
-import MyClickIcon from "@/components/custom/MyClickIcon.vue";
-import { ref } from "vue";
 
 const value = ref(false);
 

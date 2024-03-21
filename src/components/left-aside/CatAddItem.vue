@@ -14,9 +14,8 @@
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
 import { useInputValidation } from "@/hooks/useInputValidation";
-import type { PropType } from "vue";
-import { ref } from "vue";
 import type { Tree } from "@/types";
+import type { PropType } from "vue";
 
 const props = defineProps({
   dataSource: {
